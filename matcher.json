@@ -1,0 +1,16 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "bash-action",
+      "pattern": [
+        {
+          "regexp": "^(ERROR|WARNING|INFO):\\s(.+),\\sline\\s(\\d+):\\s(.+)$",
+          "file": 2,
+          "line": 3,
+          "severity": 1,
+          "message": 4
+        }
+      ]
+    }
+  ]
+}
