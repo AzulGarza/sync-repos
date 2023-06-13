@@ -28,6 +28,12 @@ inputs:
     description: Labels to be applied to the PR for better categorization. Defaults to 'documentation' if not provided.
     required: false
     default: documentation
+  user-email:
+    description: The email address associated with the GitHub account performing the action. This will be used to associate the commits and pull request with this user.
+    required: true
+  user-name:
+    description: The username of the GitHub account performing the action. This will be reflected in the commits and pull request.
+    required: true
    
 runs:
   using: composite
@@ -41,6 +47,8 @@ runs:
     - name: "Sync Files/Directories"
       if: steps.filter.outputs.source-path == 'true'
       run : |
+          git config --global user.email "${{ inputs.user-email }}"
+          git config --global user.name "${{ inputs.user-name }}"
           git clone --branch ${{ inputs.base-branch }} https://${{ inputs.github-token }}@github.com/${{ inputs.target-repo }}.git temp
           cp -r ${{ inputs.source-path }} temp/${{ inputs.target-path }}
           cd temp
