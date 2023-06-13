@@ -1,5 +1,5 @@
-name: Bash Action
-description: A sample GitHub Action written in Bash
+name: Sync Repos Action
+description: A sample GitHub Action to sync files across multiple repos
 
 inputs:
   output-repo:
