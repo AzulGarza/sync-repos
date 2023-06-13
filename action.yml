@@ -55,7 +55,7 @@ runs:
           git add .
           git commit -m "${{ inputs.commit-message}}"
           git push --set-upstream origin ${{ inputs.branch-name }}
-          gh pr create -H ${{ inputs.branch-name }} -B main --title 'Update ${{ inputs.input-file }} file' --body 'Created by Github action' --label ${{ inputs.label}}
+          gh pr create -H ${{ inputs.branch-name }} -B main --title 'Update ${{ inputs.output-file }} file' --body 'Created by Github action' --label ${{ inputs.label}}
           echo "[LOG] Remove Folder"
           cd ..
           rm -rf temp
