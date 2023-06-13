@@ -35,12 +35,14 @@ runs:
   using: composite
   steps:
     - uses: actions/checkout@v2
+      shell: bash
     - uses: dorny/paths-filter@v2
       id: filter
       with:
         filters: |
           input-file:
             - "${{ inputs.input-file }}"
+      shell: bash
     - name: "Sync File"
       if: steps.filter.outputs.input-file == 'true'
       run : |
@@ -49,7 +51,7 @@ runs:
           git clone https://github.com/${{ inputs.output-repo }}.git temp
           cp ${{ inputs.input-file }} temp/${{ inputs.output-file }}
           cd temp
-          git remote set-url origin https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/${{ inputs.output-repo }}
+          git remote set-url origin https://x-access-token:${{ inputs.github-token }}@github.com/${{ inputs.output-repo }}
           git push origin --delete ${{ inputs.branch-name }} || true
           git checkout -b ${{ inputs.branch-name }}
           git add .
@@ -61,3 +63,4 @@ runs:
           rm -rf temp
       env: 
           GITHUB_TOKEN: ${{ inputs.github-token }}
+      shell: bash
