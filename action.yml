@@ -1,31 +1,31 @@
 name: Sync Repos Action
-description: A sample GitHub Action to sync files across multiple repos
+description: An automated GitHub Action to sync files or directories across multiple repositories.
 
 inputs:
-  output-repo:
-    description: The github repo to update files in
+  target-repo:
+    description: The GitHub repository where the files or directories need to be updated.
     required: true
-  output-file:
-    description: Target output file in the output repo
+  target-path:
+    description: Path of the target file or directory in the target repository where the changes need to be reflected. It can be a file or a directory.
     required: true
-  input-file:
-    description: Local input file with the changes
+  source-path:
+    description: Local path of the file or directory that contains the changes to be propagated. It can be a file or a directory.
     required: true
   branch-name:
-    description: Name of the new branch
+    description: Name of the new branch to be created for the changes.
     required: true
   github-token:
-    description: Github token with permissions to make a PR
+    description: A GitHub token with appropriate permissions to create and manage PRs.
     required: true
   commit-message:
-    description: Commit message
+    description: Message for the commit that includes the changes.
     required: true
   base-branch:
-    description: Target branch
+    description: The branch that the changes should be based off of. If not provided, defaults to 'main'.
     required: false
     default: main
   label:
-    description: Labels for the PR
+    description: Labels to be applied to the PR for better categorization. Defaults to 'documentation' if not provided.
     required: false
     default: documentation
    
@@ -36,21 +36,21 @@ runs:
       id: filter
       with:
         filters: |
-          input-file:
-            - "${{ inputs.input-file }}"
-    - name: "Sync File"
-      if: steps.filter.outputs.input-file == 'true'
+          source-path:
+            - "${{ inputs.source-path }}"
+    - name: "Sync Files/Directories"
+      if: steps.filter.outputs.source-path == 'true'
       run : |
-          git clone --branch ${{ inputs.base-branch }} https://${{ inputs.github-token }}@github.com/${{ inputs.output-repo }}.git temp
-          cp -r ${{ inputs.input-file }} temp/${{ inputs.output-file }}
+          git clone --branch ${{ inputs.base-branch }} https://${{ inputs.github-token }}@github.com/${{ inputs.target-repo }}.git temp
+          cp -r ${{ inputs.source-path }} temp/${{ inputs.target-path }}
           cd temp
-          git remote set-url origin https://x-access-token:${{ inputs.github-token }}@github.com/${{ inputs.output-repo }}
+          git remote set-url origin https://x-access-token:${{ inputs.github-token }}@github.com/${{ inputs.target-repo }}
           git push origin --delete ${{ inputs.branch-name }} || true
           git checkout -b ${{ inputs.branch-name }}
           git add .
           git commit -m "${{ inputs.commit-message}}"
           git push --set-upstream origin ${{ inputs.branch-name }}
-          gh pr create -H ${{ inputs.branch-name }} -B ${{ inputs.base-branch }} --title 'Update ${{ inputs.output-file }} file' --body 'Created by Github action' --label ${{ inputs.label}}
+          gh pr create -H ${{ inputs.branch-name }} -B ${{ inputs.base-branch }} --title 'Update ${{ inputs.target-path }}' --body 'Created by Github action' --label ${{ inputs.label}}
           cd ..
           rm -rf temp
       env: 
