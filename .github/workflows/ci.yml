@@ -21,8 +21,8 @@ jobs:
         uses: ./ # Uses an action in the root directory
         with:
           target-repo: 'FedericoGarza/sync-repos'
-          target-path: './'
-          source-path: './'
+          target-path: 'README.md'
+          source-path: 'README.md'
           branch-name: 'test-branch'
           github-token: ${{ secrets.TOKEN_GITHUB }}
           commit-message: 'Test commit'
