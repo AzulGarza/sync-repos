@@ -2,21 +2,62 @@ name: Bash Action
 description: A sample GitHub Action written in Bash
 
 inputs:
-  command:
-    description: The command to run. Either "greet" or "error"
+  output-repo:
+    description: The github repo to update files in
+    required: true
+  output-file:
+    description: Target output file in the output repo
+    required: true
+  input-file:
+    description: Local input file with the changes
+    required: true
+  branch-name:
+    description: Name of the new branch
+    required: true
+  user-email:
+    description: Github User mail
+    required: true
+  user-name:
+    description: Github User name
+    required: true
+  github-token:
+    description: Github token with permissions to make a PR
+    required: true
+  commit-message:
+    description: Commit message
+    required: true
+  label:
+    description: Labels for the PR
     required: false
-    default: greet
-  who:
-    description: If the command is greet, the name to greet
-    required: false
-
+    default: documentation
+   
 runs:
   using: composite
   steps:
-    - run: echo "::add-matcher::${GITHUB_ACTION_PATH}/matcher.json"
-      shell: bash
-    - name: Run Script
-      run: ${GITHUB_ACTION_PATH}/script.sh ${{ inputs.command }} ${{ inputs.who }}
-      shell: bash
-    - run: echo "::remove-matcher owner=bash-action::"
-      shell: bash
+    - uses: actions/checkout@v2
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          input-file:
+            - "${{ inputs.input-file }}"
+    - name: "Sync File"
+      if: steps.filter.outputs.input-file == 'true'
+      run : |
+          git config --global user.email "${{ inputs.user-email }}"
+          git config --global user.name "${{ inputs.user-name }}"
+          git clone https://github.com/${{ inputs.output-repo }}.git temp
+          cp ${{ inputs.input-file }} temp/${{ inputs.output-file }}
+          cd temp
+          git remote set-url origin https://x-access-token:${{ secrets.TOKEN_GITHUB }}@github.com/${{ inputs.output-repo }}
+          git push origin --delete ${{ inputs.branch-name }} || true
+          git checkout -b ${{ inputs.branch-name }}
+          git add .
+          git commit -m "${{ inputs.commit-message}}"
+          git push --set-upstream origin ${{ inputs.branch-name }}
+          gh pr create -H ${{ inputs.branch-name }} -B main --title 'Update ${{ inputs.input-file }} file' --body 'Created by Github action' --label ${{ inputs.label}}
+          echo "[LOG] Remove Folder"
+          cd ..
+          rm -rf temp
+      env: 
+          GITHUB_TOKEN: ${{ inputs.github-token }}
