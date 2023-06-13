@@ -1,0 +1,33 @@
+name: Test Sync Repos Action
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Make small change to see if it works
+        run: touch .github/workflows/.notest
+
+      # Run the action with sample inputs
+      - name: Run Sync Repos Action
+        uses: ./ # Uses an action in the root directory
+        with:
+          target-repo: 'FedericoGarza/sync-repos'
+          target-path: '.github/workflows'
+          source-path: '.github/workflows'
+          branch-name: 'test-branch'
+          github-token: ${{ secrets.TOKEN_GITHUB }}
+          commit-message: 'Test commit'
+          base-branch: 'main'
+          label: 'test'
+          user-email: ${{ secrets.USER_EMAIL }}
+          user-name: ${{ secrets.USER_NAME }}
+
