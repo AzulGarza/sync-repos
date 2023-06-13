@@ -50,7 +50,7 @@ runs:
       run : |
           git config --global user.email "${{ inputs.user-email }}"
           git config --global user.name "${{ inputs.user-name }}"
-          git clone https://github.com/${{ inputs.output-repo }}.git temp
+          git clone --branch ${{ inputs.base-branch }} https://github.com/${{ inputs.output-repo }}.git temp
           cp -r ${{ inputs.input-file }} temp/${{ inputs.output-file }}
           cd temp
           git remote set-url origin https://x-access-token:${{ inputs.github-token }}@github.com/${{ inputs.output-repo }}
