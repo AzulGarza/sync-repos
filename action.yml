@@ -35,14 +35,12 @@ runs:
   using: composite
   steps:
     - uses: actions/checkout@v2
-      shell: bash
     - uses: dorny/paths-filter@v2
       id: filter
       with:
         filters: |
           input-file:
             - "${{ inputs.input-file }}"
-      shell: bash
     - name: "Sync File"
       if: steps.filter.outputs.input-file == 'true'
       run : |
