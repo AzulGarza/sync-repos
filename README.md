@@ -17,6 +17,8 @@ This action can be referenced in your workflow file with:
     commit-message: 'Commit message'
     base-branch: 'main'
     label: 'documentation'
+    user-email: 'user@example.com'
+    user-name: 'username'
 ```
 Replace parameters as needed.
 
@@ -39,6 +41,10 @@ This action requires the following inputs:
 - `base-branch`: The branch that the changes should be based off of. If not provided, defaults to 'main'. _(optional)_
 
 - `label`: The labels to be applied to the PR for better categorization. Defaults to 'documentation' if not provided. _(optional)_
+
+- `user-email`: The email address associated with the GitHub account performing the action. This will be used to associate the commits and pull request with this user. _(required)_
+
+- `user-name`: The username of the GitHub account performing the action. This will be reflected in the commits and pull request. _(required)_
 
 ## Outputs
 
@@ -73,6 +79,8 @@ jobs:
           commit-message: 'Sync files'
           base-branch: 'main'
           label: 'sync'
+          user-email: 'user@example.com'
+          user-name: 'username'
 ```
 
 Remember to replace the placeholders with actual values.
