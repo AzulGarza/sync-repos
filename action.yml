@@ -14,12 +14,6 @@ inputs:
   branch-name:
     description: Name of the new branch
     required: true
-  user-email:
-    description: Github User mail
-    required: true
-  user-name:
-    description: Github User name
-    required: true
   github-token:
     description: Github token with permissions to make a PR
     required: true
@@ -47,9 +41,7 @@ runs:
     - name: "Sync File"
       if: steps.filter.outputs.input-file == 'true'
       run : |
-          git config --global user.email "${{ inputs.user-email }}"
-          git config --global user.name "${{ inputs.user-name }}"
-          git clone --branch ${{ inputs.base-branch }} https://github.com/${{ inputs.output-repo }}.git temp
+          git clone --branch ${{ inputs.base-branch }} https://${{ inputs.github-token }}@github.com/${{ inputs.output-repo }}.git temp
           cp -r ${{ inputs.input-file }} temp/${{ inputs.output-file }}
           cd temp
           git remote set-url origin https://x-access-token:${{ inputs.github-token }}@github.com/${{ inputs.output-repo }}
