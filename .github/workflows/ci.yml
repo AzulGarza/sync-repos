@@ -14,15 +14,15 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Make small change to see if it works
-        run: touch .github/workflows/.notest
+        run: echo "## TEST" >> README.md
 
       # Run the action with sample inputs
       - name: Run Sync Repos Action
         uses: ./ # Uses an action in the root directory
         with:
           target-repo: 'FedericoGarza/sync-repos'
-          target-path: '.github/workflows'
-          source-path: '.github/workflows'
+          target-path: './'
+          source-path: './'
           branch-name: 'test-branch'
           github-token: ${{ secrets.TOKEN_GITHUB }}
           commit-message: 'Test commit'
