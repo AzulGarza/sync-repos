@@ -18,14 +18,14 @@ jobs:
       - name: Run Sync Repos Action
         uses: ./ # Uses an action in the root directory
         with:
-          target-repo: 'FedericoGarza/sync-repos'
-          target-path: 'README.md'
-          source-path: 'README.md'
-          branch-name: 'test-branch'
+          target-repo: FedericoGarza/sync-repos
+          target-path: README.md
+          source-path: README.md
+          branch-name: test-branch
           github-token: ${{ secrets.TOKEN_GITHUB }}
           commit-message: 'Test commit'
-          base-branch: 'test-ci' # This branch contains changes to be compared to
-          label: 'test'
+          base-branch: test-ci # This branch contains changes to be compared to
+          label: test
           user-email: ${{ secrets.USER_EMAIL }}
           user-name: ${{ secrets.USER_NAME }}
 
