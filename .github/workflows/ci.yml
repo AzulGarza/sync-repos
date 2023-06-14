@@ -13,9 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
-      - name: Make small change to see if it works
-        run: echo "## TEST" >> README.md
 
       # Run the action with sample inputs
       - name: Run Sync Repos Action
@@ -27,7 +24,7 @@ jobs:
           branch-name: 'test-branch'
           github-token: ${{ secrets.TOKEN_GITHUB }}
           commit-message: 'Test commit'
-          base-branch: 'main'
+          base-branch: 'test-ci' # This branch contains changes to be compared to
           label: 'test'
           user-email: ${{ secrets.USER_EMAIL }}
           user-name: ${{ secrets.USER_NAME }}
