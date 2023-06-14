@@ -9,16 +9,16 @@ This action can be referenced in your workflow file with:
 ```yaml
 - uses: FedericoGarza/sync-repos@main
   with:
-    target-repo: 'target/repo'
-    target-path: 'target/path'
-    source-path: 'source/path'
-    branch-name: 'new-branch'
+    target-repo: target/repo
+    target-path: target/path
+    source-path: source/path
+    branch-name: new-branch
     github-token: ${{ secrets.GITHUB_TOKEN }}
     commit-message: 'Commit message'
-    base-branch: 'main'
-    label: 'documentation'
-    user-email: 'user@example.com'
-    user-name: 'username'
+    base-branch: main
+    label: documentation
+    user-email: user@example.com
+    user-name: username
 ```
 Replace parameters as needed.
 
@@ -71,16 +71,16 @@ jobs:
       - name: Sync Repos
         uses: FedericoGarza/sync-repos@main
         with:
-          target-repo: 'target/repo'
-          target-path: 'target/path'
-          source-path: 'source/path'
-          branch-name: 'sync-branch'
+          target-repo: target/repo
+          target-path: target/path
+          source-path: source/path
+          branch-name: sync-branch
           github-token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'Sync files'
-          base-branch: 'main'
-          label: 'sync'
-          user-email: 'user@example.com'
-          user-name: 'username'
+          base-branch: main
+          label: sync
+          user-email: user@example.com
+          user-name: username
 ```
 
 Remember to replace the placeholders with actual values.
