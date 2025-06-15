@@ -18,7 +18,7 @@ jobs:
       - name: Run Sync Repos Action
         uses: ./ # Uses an action in the root directory
         with:
-          target-repo: FedericoGarza/sync-repos
+          target-repo: AzulGarza/sync-repos
           target-path: README.md
           source-path: README.md
           branch-name: test-branch
