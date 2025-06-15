@@ -7,7 +7,7 @@ Sync Repos Action is a GitHub Action designed to synchronize files or directorie
 This action can be referenced in your workflow file with:
 
 ```yaml
-- uses: FedericoGarza/sync-repos@main
+- uses: AzulGarza/sync-repos@main
   with:
     target-repo: target/repo
     target-path: target/path
@@ -69,7 +69,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Sync Repos
-        uses: FedericoGarza/sync-repos@main
+        uses: AzulGarza/sync-repos@main
         with:
           target-repo: target/repo
           target-path: target/path
